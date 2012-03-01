@@ -166,6 +166,9 @@ class Document(BaseDocument):
                     collection.update({'_id': object_id}, {"$unset": removals}, upsert=True, safe=safe, **write_options)
 
             # Save any references / generic references
+            """
+            Disabling this until it's properly configurable.
+            It causes undue syncing with Golden Gate when associated items change
             _refs = _refs or []
             for name, cls in self._fields.items():
                 if isinstance(cls, (ReferenceField, GenericReferenceField)):
@@ -175,6 +178,7 @@ class Document(BaseDocument):
                         ref.save(safe=safe, force_insert=force_insert,
                                  validate=validate, write_options=write_options,
                                  _refs=_refs)
+            """
 
         except pymongo.errors.OperationFailure, err:
             message = 'Could not save document (%s)'
